@@ -1,0 +1,4 @@
+🔄 Parsing /Users/piotrwalkowski/python/rare-disease-assistant/data/owlapi.xrdf
+✅ Loaded 3524182 RDF triples
+✅ Found 115086 disease–symptom pairs
+💾 Results saved to /Users/piotrwalkowski/python/rare-disease-assistant/neo4j/import/disease_symptom_associations.csv

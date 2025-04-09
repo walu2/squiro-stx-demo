@@ -8,11 +8,11 @@ OUTPUT_PATH = THIS_DIR.parent / "neo4j" / "import"
 OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
 
 graph = Graph()
-print(f"🔄 Parsuję {ONTOLOGY_PATH}")
+print(f"🔄 Parsing {ONTOLOGY_PATH}")
 graph.parse(ONTOLOGY_PATH, format="xml")
-print(f"✅ Załadowano {len(graph)} trójek RDF")
+print(f"✅ Loaded {len(graph)} RDF triples")
 
-# Funkcja rozpakowująca RDF listy (intersectionOf)
+# Function to unpack RDF lists (intersectionOf)
 def unpack_list(node, graph):
     items = []
     while node and node != RDF.nil:
@@ -27,7 +27,7 @@ object_pred = URIRef("http://purl.org/oban/association_has_object")
 
 associations = []
 
-# Wyciągnij klasy chorób wraz z ich restrykcjami OWL
+# Extract disease classes along with their OWL restrictions
 for disease_class, _, equiv_node in graph.triples((None, OWL.equivalentClass, None)):
     for _, _, intersection_node in graph.triples((equiv_node, OWL.intersectionOf, None)):
         intersection_elements = unpack_list(intersection_node, graph)
@@ -52,10 +52,10 @@ for disease_class, _, equiv_node in graph.triples((None, OWL.equivalentClass, No
                 "symptom_uri": str(symptom_uri)
             })
 
-print(f"✅ Znaleziono {len(associations)} par choroba–objaw")
+print(f"✅ Found {len(associations)} disease–symptom pairs")
 
 df = pd.DataFrame(associations)
 csv_output_path = OUTPUT_PATH / "disease_symptom_associations.csv"
 df.to_csv(csv_output_path, index=False)
 
-print(f"💾 Wyniki zapisane do {csv_output_path}")
+print(f"💾 Results saved to {csv_output_path}")

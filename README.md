@@ -145,21 +145,7 @@ _Based on the symptoms of ataxia and muscle weakness, the most likely candidate 
 
 
 ### DEPLOYMENT
-
-🐳 Krok 4: Przygotuj deployment na Fly.io
-
-4.1 Zainstaluj Fly CLI
-brew install flyctl  # Mac
-lub:
-curl -L https://fly.io/install.sh | sh
-4.2 Zaloguj się i zainicjuj projekt
-fly auth login
-cd rare-disease-assistant
-fly launch --name rare-disease-api --no-deploy
-Wybierz np. Frankfurt jako region
-
-
-fly deploy
+N/A
 
 ---
 ### 🧠 Design Philosophy

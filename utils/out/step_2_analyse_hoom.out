@@ -1,0 +1,46 @@
+🔄 Parsing file: /Users/piotrwalkowski/python/rare-disease-assistant/data/owlapi.xrdf
+✅ Loaded 3524182 RDF triples
+🔎 Found 0 triples with association_has_subject
+🔎 Found 0 triples with association_has_object
+
+📌 Example association_has_subject:
+
+📌 Example association_has_object:
+
+❗ No expected predicates found – displaying the most frequently used ones:
+http://www.w3.org/1999/02/22-rdf-syntax-ns#type: 804619
+http://www.w3.org/2002/07/owl#onProperty: 553013
+http://www.w3.org/1999/02/22-rdf-syntax-ns#first: 553012
+http://www.w3.org/1999/02/22-rdf-syntax-ns#rest: 553012
+http://www.w3.org/2002/07/owl#someValuesFrom: 435167
+http://www.w3.org/2000/01/rdf-schema#label: 133640
+http://www.w3.org/2000/01/rdf-schema#subClassOf: 133625
+http://www.w3.org/2002/07/owl#equivalentClass: 117938
+http://www.w3.org/2002/07/owl#intersectionOf: 117931
+http://www.w3.org/2002/07/owl#hasValue: 117839
+http://www.w3.org/2000/01/rdf-schema#comment: 4304
+http://www.w3.org/2000/01/rdf-schema#range: 14
+http://www.w3.org/2000/01/rdf-schema#domain: 14
+http://www.w3.org/2000/01/rdf-schema#isDefinedBy: 12
+http://purl.org/dc/elements/1.1/creator: 7
+http://www.w3.org/2002/07/owl#inverseOf: 6
+http://www.w3.org/2002/07/owl#onClass: 6
+http://www.w3.org/2002/07/owl#qualifiedCardinality: 3
+https://creativecommons.org/licenses/permits: 3
+http://www.w3.org/2002/07/owl#disjointWith: 2
+🔎 Most frequently used OWL properties (onProperty):
+http://purl.org/oban/association_has_object: 115087
+http://purl.org/oban/association_has_subject: 115087
+http://www.semanticweb.org/ontology/HOOM#validation_association_date: 114994
+http://www.semanticweb.org/ontology/HOOM#has_frequency: 114376
+http://purl.org/oban/has_provenance: 86208
+http://purl.obolibrary.org/obo/RO_0002558: 5682
+http://www.semanticweb.org/ontology/HOOM#has_DC_attribute: 1568
+http://www.semanticweb.org/ontology/HOOM#with_frequency: 6
+http://www.semanticweb.org/ontology/HOOM#is_DC_attribute: 1
+http://purl.obolibrary.org/obo/RO_0002472: 1
+http://www.semanticweb.org/ontology/HOOM#is_frequency: 1
+http://purl.org/oban/object_has_association: 1
+http://purl.org/oban/subject_has_association: 1
+
+💾 Saved 0 associations to file: /Users/piotrwalkowski/python/rare-disease-assistant/neo4j/import/disease_symptom_associations.csv
