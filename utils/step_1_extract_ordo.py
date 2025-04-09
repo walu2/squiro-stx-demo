@@ -1,10 +1,10 @@
-from rdflib import Graph, Namespace, RDF, RDFS, OWL, URIRef
+from rdflib import Graph, Namespace, RDFS, URIRef
 import pandas as pd
 from pathlib import Path
-import os
+
+INCLUDE_MISSING = True
 
 # === Configuration ===
-
 THIS_DIR = Path(__file__).resolve().parent
 ONTOLOGY_PATH = THIS_DIR.parent / "data" / "ordo.owl"
 OUTPUT_PATH = THIS_DIR.parent / "neo4j" / "import"
@@ -20,11 +20,10 @@ print(f"Loaded {len(g)} triples from {ONTOLOGY_PATH}")
 CLASS_ROOTS = {
     "disease": URIRef("http://www.orpha.net/ORDO/Orphanet_557493"),
     "symptom": URIRef("http://www.orpha.net/ORDO/Orphanet_377791"),
-    "gene": URIRef("http://www.orpha.net/ORDO/Orphanet_317344"),
+  #  "gene": URIRef("http://www.orpha.net/ORDO/Orphanet_317344"),
 }
 
-
-# === Load graph ===
+# === Load utils ===
 g = Graph()
 g.parse(ONTOLOGY_PATH)
 
@@ -45,8 +44,8 @@ extract_entities(CLASS_ROOTS["symptom"], "Symptom").to_csv(OUTPUT_PATH / "sympto
 # === Extract subclass relations ===
 subclasses = []
 for s, p, o in g.triples((None, RDFS.subClassOf, None)):
-#    if isinstance(o, URIRef):
-    subclasses.append({"child_id": str(s), "parent_id": str(o)})
+    if INCLUDE_MISSING or isinstance(o, URIRef):
+        subclasses.append({"child_id": str(s), "parent_id": str(o)})
 pd.DataFrame(subclasses).to_csv(OUTPUT_PATH / "is_a.csv", index=False)
 
 print("✅ ORDO extraction complete.")

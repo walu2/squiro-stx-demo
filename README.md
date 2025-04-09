@@ -44,7 +44,7 @@ For windows:
 
 ORDER
 ```bash
-python3 python3 graph/extract_ordo.py
+python3 python3 utils/step_1_extract_ordo.py
 
 ```
 
