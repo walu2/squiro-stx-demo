@@ -1,0 +1,33 @@
+= Advanced Cypher Queries
+:author: Piotr
+:toc: macro
+
+== Similar Diseases by Shared Symptoms
+
+[source,cypher]
+----
+MATCH (d1:Disease {label: "Ataxia-telangiectasia"})-[:HAS_SYMPTOM]->(s:Symptom)<-[:HAS_SYMPTOM]-(d2:Disease)
+WHERE d1 <> d2
+WITH d2, count(s) AS shared
+WHERE shared > 3
+RETURN d2.label AS similar_disease, shared
+ORDER BY shared DESC;
+----
+
+== Frequency Grouping
+
+[source,cypher]
+----
+MATCH ()-[r:HAS_SYMPTOM]->()
+RETURN r.frequency AS frequency, count(*) AS count
+ORDER BY count DESC;
+----
+
+== Inherited Symptoms via IS_A
+
+[source,cypher]
+----
+MATCH (d:Disease)-[:IS_A*1..3]->(parent)-[r:HAS_SYMPTOM]->(s:Symptom)
+RETURN d.label AS disease, collect(DISTINCT s.label) AS inherited_symptoms
+LIMIT 10;
+----

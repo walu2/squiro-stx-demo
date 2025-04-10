@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 THIS_DIR = Path(__file__).resolve().parent
-ONTOLOGY_PATH = THIS_DIR.parent / "data" / "owlapi.xrdf"
+ONTOLOGY_PATH = THIS_DIR.parent / "data_import" / "owlapi.xrdf"
 OUTPUT_PATH = THIS_DIR.parent / "neo4j" / "import"
 OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
 

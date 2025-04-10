@@ -6,7 +6,7 @@ INCLUDE_MISSING = True
 
 # === Configuration ===
 THIS_DIR = Path(__file__).resolve().parent
-ONTOLOGY_PATH = THIS_DIR.parent / "data" / "ordo.owl"
+ONTOLOGY_PATH = THIS_DIR.parent / "data_import" / "ordo.owl"
 OUTPUT_PATH = THIS_DIR.parent / "neo4j" / "import"
 
 ORDO = Namespace("http://www.orpha.net/ORDO/")

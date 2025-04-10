@@ -7,7 +7,7 @@ def offline_generate_summary(symptoms: list, diseases: list) -> str:
     Generate an offline summary based on the provided symptoms and diseases.
     """
     disease_lines = "\n".join(
-        f"- {d['name']} (matched symptoms: {d['matches']})" for d in diseases
+        f"- {d['label']} (score: {d.get('score') or d.get('matches')})" for d in diseases
     )
 
     summary = (
@@ -22,24 +22,28 @@ def offline_generate_summary(symptoms: list, diseases: list) -> str:
     return summary
 
 
-def generate_summary(symptoms: list, diseases: list) -> str:
+def generate_summary(data: dict) -> str:
     """
-    Try to generate a summary using the OpenAI API.
-    If API communication fails, return an offline result.
+    Generate a natural language summary using OpenAI API (or offline fallback),
+    based on symptoms and diseases already matched.
     """
-    # Set up the API key. Prefer the environment variable, or use a fallback key if not provided.
-    openai.api_key = os.getenv("OPENAI_API_KEY", "sk-...")  # Replace "sk-..." with your fallback API key if needed
+    symptoms = data.get("symptoms", [])
+    diseases = data.get("diseases", [])
+
+    if not diseases or not symptoms:
+        return "Insufficient data provided to generate a meaningful summary."
+
+    # Set up the API key from environment variable
+    openai.api_key = os.getenv("OPENAI_API_KEY", "sk-...")  # Replace with fallback only for local dev/testing
 
     disease_lines = "\n".join(
-        f"- {d['name']} (matched symptoms: {d['matches']})" for d in diseases
+        f"- {d['label']} (score: {d.get('score') or d.get('matches')})" for d in diseases
     )
 
     prompt = (
-        f"Given the following symptoms: {', '.join(symptoms)},\n"
-        f"and the following matched rare diseases:\n"
-        f"{disease_lines}\n\n"
-        "Generate a medical-style explanation that suggests which diseases are most likely, and why.\n"
-        "Explain the symptom-disease relationship in simple but accurate language."
+        f"Given the symptoms: {', '.join(symptoms)}\n"
+        f"and the matched rare diseases:\n{disease_lines}\n\n"
+        "Write a medical-style explanation suggesting which diseases are most likely and why."
     )
 
     try:
@@ -48,9 +52,8 @@ def generate_summary(symptoms: list, diseases: list) -> str:
             messages=[{"role": "user", "content": prompt}],
             temperature=0.4
         )
-        return response['choices'][0]['message']['content']
+        return response.choices[0].message.content
     except Exception as error:
-        # If communication with OpenAI fails, fall back to the offline mode.
         print("Error communicating with OpenAI API. Switching to offline mode.")
         print("Error details:", error)
         return offline_generate_summary(symptoms, diseases)

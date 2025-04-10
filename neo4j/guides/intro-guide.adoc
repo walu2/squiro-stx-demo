@@ -1,7 +1,9 @@
-= Rare Disease Knowledge Graph Demo
-Welcome to the interactive demo of the Rare Disease Knowledge Graph!
+= Basic Cypher Queries
+:author: Piotr
+:toc: macro
 
-== 📊 Node Counts
+== Node and Relationship Statistics
+
 [source,cypher]
 ----
 MATCH (n)
@@ -9,7 +11,6 @@ RETURN labels(n)[0] AS label, count(*) AS total
 ORDER BY total DESC;
 ----
 
-== 🔗 Relationship Types
 [source,cypher]
 ----
 MATCH ()-[r]->()
@@ -17,42 +18,45 @@ RETURN type(r) AS relationship, count(*) AS total
 ORDER BY total DESC;
 ----
 
-== 🧬 Top Diseases by Symptom Count
+== Top Diseases and Symptoms
+
 [source,cypher]
 ----
 MATCH (d:Disease)-[:HAS_SYMPTOM]->(s:Symptom)
 RETURN d.label AS disease, count(s) AS symptom_count
-ORDER BY symptom_count DESC LIMIT 10;
+ORDER BY symptom_count DESC
+LIMIT 10;
 ----
 
-== 🧠 Most Common Symptoms
 [source,cypher]
 ----
 MATCH (d:Disease)-[:HAS_SYMPTOM]->(s:Symptom)
 RETURN s.label AS symptom, count(DISTINCT d) AS disease_count
-ORDER BY disease_count DESC LIMIT 10;
+ORDER BY disease_count DESC
+LIMIT 10;
 ----
 
-== 🧾 Symptoms for a Specific Disease
+== Disease ↔ Symptom Details
+
 [source,cypher]
 ----
-MATCH (d:Disease {label: "Ataxia-telangiectasia"})-[r:HAS_SYMPTOM]->(s:Symptom)
+MATCH (d:Disease {label: "Dyskeratosis congenita"})-[r:HAS_SYMPTOM]->(s:Symptom)
 RETURN s.label AS symptom, r.frequency
 ORDER BY r.frequency;
 ----
 
-== 🔍 Diseases for a Given Symptom
 [source,cypher]
 ----
-MATCH (s:Symptom {label: "Situs inversus totalis"})<-[:HAS_SYMPTOM]-(d:Disease)
+MATCH (s:Symptom {label: "Microlissencephaly"})<-[:HAS_SYMPTOM]-(d:Disease)
 RETURN d.label AS disease;
 ----
 
-== 🧬 Inheritance Hierarchy
+== Random Disease Inheritance Tree
+
 [source,cypher]
 ----
 MATCH (d:Disease)
-WITH d SKIP rand() * 100 LIMIT 1
+WITH d SKIP toInteger(rand() * 100) LIMIT 1
 MATCH path = (d)-[:IS_A*1..5]->(ancestor)
 RETURN path;
 ----

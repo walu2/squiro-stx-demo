@@ -22,14 +22,13 @@ services:
       - "7474:7474"
       - "7687:7687"
     volumes:
-      - ./data:/data
-      - ./import:/import
-      - ./guides:/guides
+      - ./neo4j/data:/data
+      - ./neo4j/import:/import
+      - ./neo4j/guides:/guides
     environment:
       - NEO4J_AUTH=neo4j/password
       - NEO4J_PLUGINS=["graph-data-science", "apoc"]
       - NEO4J_dbms_security_procedures_unrestricted=gds.*, apoc.*
       - NEO4J_apoc_import_file_enabled=true
       - NEO4J_dbms_security_procedures_whitelist=gds.*,apoc.*
-
 

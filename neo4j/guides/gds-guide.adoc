@@ -1,0 +1,102 @@
+= Graph Data Science (GDS) Queries
+:author: Piotr
+:toc: macro
+
+== Assign Numeric Frequency Scores
+
+[source,cypher]
+----
+MATCH (:Disease)-[r:HAS_SYMPTOM]->(:Symptom)
+SET r.freq_score =
+  CASE r.frequency
+    WHEN 'VF' THEN 1.0
+    WHEN 'Frequent' THEN 0.75
+    WHEN 'Occasional' THEN 0.25
+    ELSE 0.1
+  END;
+----
+
+== Graph Projection for GDS
+
+[source,cypher]
+----
+CALL gds.graph.project(
+  'rareGraph',
+  ['Disease', 'Symptom'],
+  {
+    HAS_SYMPTOM: {
+      type: 'HAS_SYMPTOM',
+      properties: 'freq_score'
+    },
+    IS_A: {
+      type: 'IS_A'
+    }
+  }
+);
+----
+
+== Similarity Network Projection
+
+[source,cypher]
+----
+CALL gds.graph.project.cypher(
+  'rareGraphS',
+  'MATCH (d:Disease) RETURN id(d) AS id',
+  'MATCH (d:Disease)-[:HAS_SYMPTOM]->(s:Symptom)<-[:HAS_SYMPTOM]-(d2:Disease)
+   RETURN id(d) AS source, id(d2) AS target'
+);
+----
+
+== PageRank on Diseases
+
+[source,cypher]
+----
+CALL gds.pageRank.stream('rareGraph')
+YIELD nodeId, score
+WITH gds.util.asNode(nodeId) AS node, score
+WHERE "Disease" IN labels(node)
+RETURN node.label AS disease, score
+ORDER BY score DESC LIMIT 10;
+----
+
+== Louvain Community Detection
+
+[source,cypher]
+----
+CALL gds.louvain.stream('rareGraph')
+YIELD nodeId, communityId
+WITH communityId, gds.util.asNode(nodeId) AS node
+ORDER BY node.label
+WITH communityId, collect(node.label) AS diseases, count(*) AS groupSize
+RETURN communityId, groupSize, diseases
+ORDER BY groupSize ASC
+LIMIT 3;
+----
+
+== Betweenness Centrality on Symptoms
+
+[source,cypher]
+----
+CALL gds.betweenness.stream('rareGraph')
+YIELD nodeId, score
+WITH gds.util.asNode(nodeId) AS node, score
+WHERE "Symptom" IN labels(node)
+RETURN node.label AS symptom, score
+ORDER BY score DESC LIMIT 10;
+----
+
+== Similarity Write + Query
+
+[source,cypher]
+----
+CALL gds.nodeSimilarity.write('rareGraphS', {
+  writeRelationshipType: 'SIMILAR',
+  writeProperty: 'score',
+  similarityCutoff: 0.1,
+  concurrency: 4
+});
+
+MATCH (d:Disease)-[r:SIMILAR]->(d2:Disease)
+RETURN d.label AS first_disease, d2.label AS second_disease, r.score
+ORDER BY r.score DESC LIMIT 10;
+----
