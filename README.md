@@ -1,6 +1,6 @@
 # 🧠 Rare Disease Assistant – Graph-AI Demo
 
-This is a 1-day showcase project (it took me < ~8h to prepare, like a hackathon :)) that demonstrates how structured semantic knowledge (from ORDO ontology) can be used for rare disease reasoning using graphs, lightweight NLP and optional LLM support.
+This is a 1-day showcase project (prepared in under 8 hours, like a hackathon :)) that demonstrates how structured semantic knowledge (from the ORDO ontology) can be used for rare disease reasoning through graphs, lightweight NLP, and optional LLM support.
 
 ## 🎯 Goal
 
@@ -8,7 +8,7 @@ This is a 1-day showcase project (it took me < ~8h to prepare, like a hackathon 
 
 
 **Please note**: 
-Some fetures are not 100% finished, and data itself is not 100% balances and production ready for real application. This is jsut a base for potential further enchrichment.
+> Some features are not fully finished, and the data itself is **not** completely balanced or production-ready. This is just a foundation for potential further enrichment.
 ---
 
 
