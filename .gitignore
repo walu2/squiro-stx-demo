@@ -2,11 +2,15 @@
 */.DS_Store
 .DS_Store
 .idea/*
+.neo4j/
+
+data/*
 
 neo4j/data/*
 
-data/*.owl
-data/*.xrdf
+data_import/*.owl
+data_import/*.xrdf
 
-graph/*.owl
-graph/*.xrdf
+*.pyc
+*/*.pyc
+*/*/*.pyc
